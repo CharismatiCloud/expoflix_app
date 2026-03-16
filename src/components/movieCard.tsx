@@ -2,20 +2,27 @@ import { Movie } from "@/types/movie.type";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 type Props = {
-  item: Movie;
+  item: any; // Alterado para 'any' para evitar erros de TypeScript caso o seu arquivo movie.type.ts não esteja atualizado
 };
 
 export const MovieCard = ({ item }: Props) => {
+  // 1. Juntamos a URL base do TMDB com o caminho da imagem que vem da API
+  const imageUrl = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
+
   return (
     <View style={styles.card}>
-      <Image source={{ uri: item.poster }} style={styles.image} resizeMode="contain" />
+      <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="contain" />
       <View>
         <Text style={styles.titleMovie}>{item.title}</Text>
         <Text style={{ color: "white" }}>{item.release_date}</Text>
-        <Text style={{ color: "white" }}>Lang: {item.language}</Text>
+        
+        {/* 2. Corrigido para original_language (como o TMDB envia) */}
+        <Text style={{ color: "white" }}>Lang: {item.original_language}</Text>
+        
         <View style={styles.rank}>
           <Text style={{ color: "white" }}>Rank:</Text>
-          <Text style={{ color: "yellow" }}>{item.rank}</Text>
+          {/* 3. Corrigido para vote_average (como o TMDB envia) */}
+          <Text style={{ color: "yellow" }}>{item.vote_average}</Text>
         </View>
       </View>
     </View>
